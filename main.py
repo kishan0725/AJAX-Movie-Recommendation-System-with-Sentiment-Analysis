@@ -9,12 +9,6 @@ import urllib.request
 import pickle
 import requests
 
-from tmdbv3api import TMDb
-tmdb = TMDb()
-tmdb.api_key = '5492165c61b1a21c06eb3a3b578a6339'
-
-from tmdbv3api import Movie
-
 # load the nlp model and tfidf vectorizer from disk
 filename = 'nlp_model.pkl'
 clf = pickle.load(open(filename, 'rb'))
@@ -28,7 +22,6 @@ def create_sim():
     # creating a similarity score matrix
     sim = cosine_similarity(count_matrix)
     return data,sim
-
 
 def rcmd(m):
     m = m.lower()
@@ -49,31 +42,6 @@ def rcmd(m):
             a = lst[i][0]
             l.append(data['movie_title'][a])
         return l
-
-def ListOfGenres(genre_json):
-    if genre_json:
-        genres = []
-        genre_str = ", " 
-        for i in range(0,len(genre_json)):
-            genres.append(genre_json[i]['name'])
-        return genre_str.join(genres)
-
-def date_convert(s):
-    MONTHS = ['January', 'February', 'Match', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December']
-    y = s[:4]
-    m = int(s[5:-3])
-    d = s[8:]
-    month_name = MONTHS[m-1]
-
-    result= month_name + ' ' + d + ' '  + y
-    return result
-
-def MinsToHours(duration):
-    if duration%60==0:
-        return "{:.0f} hours".format(duration/60)
-    else:
-        return "{:.0f} hours {} minutes".format(duration/60,duration%60)
 
 def get_suggestions():
     data = pd.read_csv('main_data.csv')
@@ -130,10 +98,6 @@ def recommend():
     soup = bs.BeautifulSoup(sauce,'lxml')
     soup_result = soup.find_all("div",{"class":"text show-more__control"})
 
-    f = open("sample.txt","w")
-    f.write(imdb_id)
-    f.close()
-
     reviews_list = [] # list of reviews
     reviews_status = [] # list of comments (good or bad)
     for reviews in soup_result:
@@ -145,7 +109,7 @@ def recommend():
             pred = clf.predict(movie_vector)
             reviews_status.append('Good' if pred else 'Bad')
 
-    # combining reviews and comments into dictionary
+    # combining reviews and comments into a dictionary
     movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}     
 
     return render_template('recommend.html',title=title,poster=poster,overview=overview,vote_average=vote_average,
