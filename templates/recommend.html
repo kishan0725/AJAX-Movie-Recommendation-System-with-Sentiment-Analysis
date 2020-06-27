@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NEW</title>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+
+</head>
+
+<body id="content">
+	<div class="results">
+	    <center>
+	      <h2 id="name" class="text-uppercase">{{title}}</h2>
+	    </center>
+	</div>
+	<br>
+
+<div id="mycontent">
+    <div id="mcontent">
+      <div class="poster-lg">
+        <img class="poster" style="border-radius: 40px;margin-left: 90px;" height="400" width="250" src={{poster}}>
+      </div>
+      <div class="poster-sm text-center">
+        <img class="poster" style="border-radius: 40px;margin-bottom: 5%;" height="400" width="250" src={{poster}}>
+      </div>
+      <div id="details">
+        <br/>
+        <h6 id="title" style="color:white;">TITLE: &nbsp;{{title}}</h6>
+        <h6 id="overview" style="color:white;max-width: 85%">OVERVIEW: <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{overview}}</h6>
+        <h6 id="vote_average" style="color:white;">RATING: &nbsp;{{vote_average}}/10 ({{vote_count}} votes)</h6>
+        <h6 id="genres" style="color:white;">GENRE: &nbsp;{{genres}}</h6>
+        <h6 id="date" style="color:white;">RELEASE DATE: &nbsp;{{release_date}}</h6>
+        <h6 id="runtime" style="color:white;">RUNTIME: &nbsp;{{runtime}}</h6>
+        <h6 id="status" style="color:white;">STATUS: &nbsp;{{status}}</h6>
+      </div>
+    </div>
+</div>
+<br/>
+
+  <center>
+    {% if reviews %}
+    <h2 style="color:white">USER REVIEWS</h2>
+     <div class="col-md-12" style="margin: 0 auto; margin-top:25px;">
+        <table class="table table-bordered" bordercolor="white" style="color:white">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col" style="width: 75%">Comments</th>
+                    <th class="text-center" scope="col">Sentiments</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+		      {% for review, status in reviews.items() if not reviews.hidden %}
+		      <tr style="background-color:#e5091485;">
+              	  <td>{{review}}</td>
+	              <td><center>
+	                  {{status}} : 
+	                  {% if status =='Good' %}
+	                    &#128515;
+	                  {% else %}
+	                    &#128534;
+	                  {% endif %}
+	                </center>
+	              </td>
+          		</tr>
+      			{% endfor %}
+    		</tbody>
+ 		 </table>
+    </div>
+    {% else %}
+    <div style="color:white;">
+      <h1 style="color:white"> This movie is not released yet. Stay tuned! </h1>
+    </div>
+    {% endif %}
+  </center>
+
+      <div class="movie" style="color: #E8E8E8;">
+	    <center><h3>RECOMMENDED MOVIES FOR YOU</h3></center>
+	  </div>
+
+	  <div class="movie-content">
+	    {% for poster, title in movie_cards.items() if not movie_cards.hidden %}
+		    <div class="card" style="width: 14rem;" title="{{title}}" onclick="recommendcard(this)">
+		      <img class="card-img-top" height="360" width="240" alt="Card image cap" src={{poster}}>
+		      <div class="card-body">
+		        <h5 class="card-title">{{title|capitalize}}</h5>
+		      </div>
+		    </div>
+		{% endfor %}
+	  </div>
+
+    
+    </div>
+  </div>
+
+	
+	<div class="footer" style="">Made with<span style="font-size:150%;color:red;"> &hearts; </span>by Kishan</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='recommend.js')}}"></script>
+</body>
+</html>
