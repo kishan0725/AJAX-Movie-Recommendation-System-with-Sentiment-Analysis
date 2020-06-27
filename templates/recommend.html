@@ -94,7 +94,7 @@
 	  <div class="movie-content">
 	    {% for poster, title in movie_cards.items() if not movie_cards.hidden %}
 		    <div class="card" style="width: 14rem;" title="{{title}}" onclick="recommendcard(this)">
-		      <img class="card-img-top" height="360" width="240" alt="Card image cap" src={{poster}}>
+		      <img class="card-img-top" height="360" width="240" alt="{{title}} - poster" src={{poster}}>
 		      <div class="card-body">
 		        <h5 class="card-title">{{title|capitalize}}</h5>
 		      </div>
