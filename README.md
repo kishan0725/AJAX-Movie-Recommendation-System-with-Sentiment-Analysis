@@ -1,10 +1,6 @@
-# Content-Based-Movie-Recommender-System-with-sentiment-analysis
+# Content-Based-Movie-Recommender-System-with-sentiment-analysis-using-AJAX
 
 Content Based Recommender System recommends movies similar to the movie user likes and analyses the sentiments on the reviews given by the user for that movie.
-
-![GIF](./static/mrswsa.gif)
-
-Check out the youtube video if the above preview is not visible: https://www.youtube.com/watch?v=muPDsWgMkpc
 
 Check out the live demo: https://mrswsa.herokuapp.com/
 
