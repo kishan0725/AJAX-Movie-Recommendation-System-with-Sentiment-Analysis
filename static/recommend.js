@@ -169,11 +169,6 @@ function get_movie_posters(arr,my_api_key){
       url:'https://api.themoviedb.org/3/search/movie?api_key='+my_api_key+'&query='+arr[m],
       async: false,
       success: function(m_data){
-        if(m_data.results.length<1){
-            $('.fail').css('display','block');
-            $('.results').css('display','none');
-            $("#loader").delay(500).fadeOut();
-          }
         arr_poster_list.push('https://image.tmdb.org/t/p/original'+m_data.results[0].poster_path);
       },
       error: function(){
