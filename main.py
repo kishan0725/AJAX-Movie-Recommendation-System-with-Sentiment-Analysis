@@ -91,7 +91,7 @@ def recommend():
     rec_posters = rec_posters.split('","')
     rec_posters[0] = rec_posters[0].replace('["','')
     rec_posters[-1] = rec_posters[-1].replace('"]','')
-    movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_movies))}
+    movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_posters))}
 
     # web scraping to get user reviews from IMDB site
     sauce = urllib.request.urlopen('https://www.imdb.com/title/{}/reviews?ref_=tt_ov_rt'.format(imdb_id)).read()
