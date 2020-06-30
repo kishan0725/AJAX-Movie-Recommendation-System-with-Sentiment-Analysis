@@ -115,6 +115,10 @@ def recommend():
     movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_posters))}
     
     casts = {cast_names[i]:[cast_ids[i], cast_chars[i], cast_profiles[i]] for i in range(len(cast_profiles))}
+    
+    # rendering the string to python string
+    for i in range(len(cast_bios)):
+        cast_bios[i] = cast_bios[i].replace(r'\n', '\n').replace(r'\"','\"')
 
     cast_details = {cast_names[i]:[cast_ids[i], cast_profiles[i], cast_bdays[i], cast_places[i], cast_bios[i]] for i in range(len(cast_places))}
 
