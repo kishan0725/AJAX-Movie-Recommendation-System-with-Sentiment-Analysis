@@ -3,15 +3,15 @@ $(function() {
   const source = document.getElementById('autoComplete');
   const inputHandler = function(e) {
     if(e.target.value==""){
-      $('button').attr('disabled', true);
+      $('.movie-button').attr('disabled', true);
     }
     else{
-      $('button').attr('disabled', false);
+      $('.movie-button').attr('disabled', false);
     }
   }
   source.addEventListener('input', inputHandler);
 
-  $('button').on('click',function(){
+  $('.movie-button').on('click',function(){
     var my_api_key = 'YOUR_API_KEY';
     var title = $('.movie').val();
     if (title=="") {
@@ -30,7 +30,6 @@ function recommendcard(e){
   var title = e.getAttribute('title'); 
   load_details(my_api_key,title);
 }
-
 
 // get the basic details of the movie from the API (based on the name of the movie)
 function load_details(my_api_key,title){
@@ -96,7 +95,7 @@ function get_movie_details(movie_id,my_api_key,arr,movie_title) {
     type:'GET',
     url:'https://api.themoviedb.org/3/movie/'+movie_id+'?api_key='+my_api_key,
     success: function(movie_details){
-      show_details(movie_details,arr,movie_title,my_api_key);
+      show_details(movie_details,arr,movie_title,my_api_key,movie_id);
     },
     error: function(){
       alert("API Error!");
@@ -106,7 +105,7 @@ function get_movie_details(movie_id,my_api_key,arr,movie_title) {
 }
 
 // passing all the details to python's flask for displaying and scraping the movie reviews using imdb id
-function show_details(movie_details,arr,movie_title,my_api_key){
+function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
   var imdb_id = movie_details.imdb_id;
   var poster = 'https://image.tmdb.org/t/p/original'+movie_details.poster_path;
   var overview = movie_details.overview;
@@ -122,26 +121,51 @@ function show_details(movie_details,arr,movie_title,my_api_key){
   }
   var my_genre = genre_list.join(", ");
   if(runtime%60==0){
-    runtime = Math.floor(runtime/60)+" hours"
+    runtime = Math.floor(runtime/60)+" hour(s)"
   }
   else {
-    runtime = Math.floor(runtime/60)+" hours "+(runtime%60)+" mins"
+    runtime = Math.floor(runtime/60)+" hour(s) "+(runtime%60)+" min(s)"
   }
   arr_poster = get_movie_posters(arr,my_api_key);
+  
+  movie_casts = get_casts(movie_id,my_api_key);
+
+    cast_bdays = [];
+    cast_bios = [];
+    cast_places = [];
+    for(var cast_id in movie_casts.cast_ids){
+      $.ajax({
+        type:'GET',
+        url:'https://api.themoviedb.org/3/person/'+movie_casts.cast_ids[cast_id]+'?api_key='+my_api_key,
+        async:false,
+        success: function(cast_details){
+          cast_bdays.push((new Date(cast_details.birthday)).toDateString().split(' ').slice(1).join(' '));
+          cast_bios.push(cast_details.biography);
+          cast_places.push(cast_details.place_of_birth);
+        }
+      });
+    }
 
   details = {
     'title':movie_title,
-    'imdb_id':imdb_id,
-    'poster':poster,
-    'genres':my_genre,
-    'overview':overview,
-    'rating':rating,
-    'vote_count':vote_count.toLocaleString(),
-    'release_date':release_date.toDateString().split(' ').slice(1).join(' '),
-    'runtime':runtime,
-    'status':status,
-    'rec_movies':JSON.stringify(arr),
-    'rec_posters':JSON.stringify(arr_poster),
+      'cast_ids':JSON.stringify(movie_casts.cast_ids),
+      'cast_names':JSON.stringify(movie_casts.cast_names),
+      'cast_chars':JSON.stringify(movie_casts.cast_chars),
+      'cast_profiles':JSON.stringify(movie_casts.cast_profiles),
+      'cast_bdays':JSON.stringify(cast_bdays),
+      'cast_bios':JSON.stringify(cast_bios),
+      'cast_places':JSON.stringify(cast_places),
+      'imdb_id':imdb_id,
+      'poster':poster,
+      'genres':my_genre,
+      'overview':overview,
+      'rating':rating,
+      'vote_count':vote_count.toLocaleString(),
+      'release_date':release_date.toDateString().split(' ').slice(1).join(' '),
+      'runtime':runtime,
+      'status':status,
+      'rec_movies':JSON.stringify(arr),
+      'rec_posters':JSON.stringify(arr_poster),
   }
 
   $.ajax({
@@ -159,6 +183,41 @@ function show_details(movie_details,arr,movie_title,my_api_key){
     }
   });
 }
+
+// getting the details of the cast for the requested movie
+function get_casts(movie_id,my_api_key){
+    cast_ids= [];
+    cast_names = [];
+    cast_chars = [];
+    cast_profiles = [];
+
+    top_10 = [0,1,2,3,4,5,6,7,8,9];
+    $.ajax({
+      type:'GET',
+      url:"https://api.themoviedb.org/3/movie/"+movie_id+"/credits?api_key="+my_api_key,
+      async:false,
+      success: function(my_movie){
+        if(my_movie.cast.length>=10){
+          top_cast = [0,1,2,3,4,5,6,7,8,9];
+        }
+        else {
+          top_cast = [0,1,2,3,4];
+        }
+        for(var my_cast in top_cast){
+          cast_ids.push(my_movie.cast[my_cast].id)
+          cast_names.push(my_movie.cast[my_cast].name);
+          cast_chars.push(my_movie.cast[my_cast].character);
+          cast_profiles.push("https://image.tmdb.org/t/p/original"+my_movie.cast[my_cast].profile_path);
+        }
+      },
+      error: function(){
+        alert("Invalid Request!");
+        $("#loader").delay(500).fadeOut();
+      }
+    });
+
+    return {cast_ids:cast_ids,cast_names:cast_names,cast_chars:cast_chars,cast_profiles:cast_profiles};
+  }
 
 // getting posters for all the recommended movies
 function get_movie_posters(arr,my_api_key){
