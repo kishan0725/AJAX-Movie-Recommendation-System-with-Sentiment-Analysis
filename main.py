@@ -14,14 +14,14 @@ filename = 'nlp_model.pkl'
 clf = pickle.load(open(filename, 'rb'))
 vectorizer = pickle.load(open('tranform.pkl','rb'))
 
-def create_sim():
+def create_similarity():
     data = pd.read_csv('main_data.csv')
     # creating a count matrix
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(data['comb'])
     # creating a similarity score matrix
     sim = cosine_similarity(count_matrix)
-    return data,sim
+    return data,similarity
 
 def rcmd(m):
     m = m.lower()
@@ -29,14 +29,14 @@ def rcmd(m):
         data.head()
         sim.shape
     except:
-        data, sim = create_sim()
+        data, similarity = create_similarity()
     if m not in data['movie_title'].unique():
         return('Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies')
     else:
         i = data.loc[data['movie_title']==m].index[0]
         lst = list(enumerate(sim[i]))
         lst = sorted(lst, key = lambda x:x[1] ,reverse=True)
-        lst = lst[1:11]
+        lst = lst[1:11] # excluding first item since it is the requested movie itself
         l = []
         for i in range(len(lst)):
             a = lst[i][0]
@@ -98,6 +98,7 @@ def recommend():
     # get movie suggestions for auto complete
     suggestions = get_suggestions()
 
+    # call the convert_to_list function for every string that needs to be converted to list
     rec_movies = convert_to_list(rec_movies)
     rec_posters = convert_to_list(rec_posters)
     cast_names = convert_to_list(cast_names)
@@ -112,13 +113,14 @@ def recommend():
     cast_ids[0] = cast_ids[0].replace("[","")
     cast_ids[-1] = cast_ids[-1].replace("]","")
     
-    movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_posters))}
-    
-    casts = {cast_names[i]:[cast_ids[i], cast_chars[i], cast_profiles[i]] for i in range(len(cast_profiles))}
-    
     # rendering the string to python string
     for i in range(len(cast_bios)):
         cast_bios[i] = cast_bios[i].replace(r'\n', '\n').replace(r'\"','\"')
+    
+    # combining multiple lists as a dictionary which can be passed to the html file so that it can be processed easily and the order of information will be preserved
+    movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_posters))}
+    
+    casts = {cast_names[i]:[cast_ids[i], cast_chars[i], cast_profiles[i]] for i in range(len(cast_profiles))}
 
     cast_details = {cast_names[i]:[cast_ids[i], cast_profiles[i], cast_bdays[i], cast_places[i], cast_bios[i]] for i in range(len(cast_places))}
 
@@ -141,6 +143,7 @@ def recommend():
     # combining reviews and comments into a dictionary
     movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}     
 
+    # passing all the data to the html file
     return render_template('recommend.html',title=title,poster=poster,overview=overview,vote_average=vote_average,
         vote_count=vote_count,release_date=release_date,runtime=runtime,status=status,genres=genres,
         movie_cards=movie_cards,reviews=movie_reviews,casts=casts,cast_details=cast_details)
