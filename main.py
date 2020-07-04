@@ -20,21 +20,21 @@ def create_similarity():
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(data['comb'])
     # creating a similarity score matrix
-    sim = cosine_similarity(count_matrix)
+    similarity = cosine_similarity(count_matrix)
     return data,similarity
 
 def rcmd(m):
     m = m.lower()
     try:
         data.head()
-        sim.shape
+        similarity.shape
     except:
         data, similarity = create_similarity()
     if m not in data['movie_title'].unique():
         return('Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies')
     else:
         i = data.loc[data['movie_title']==m].index[0]
-        lst = list(enumerate(sim[i]))
+        lst = list(enumerate(similarity[i]))
         lst = sorted(lst, key = lambda x:x[1] ,reverse=True)
         lst = lst[1:11] # excluding first item since it is the requested movie itself
         l = []
