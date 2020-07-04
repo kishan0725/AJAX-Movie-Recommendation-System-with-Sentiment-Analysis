@@ -128,33 +128,19 @@ function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
   }
   arr_poster = get_movie_posters(arr,my_api_key);
   
-  movie_casts = get_casts(movie_id,my_api_key);
-
-    cast_bdays = [];
-    cast_bios = [];
-    cast_places = [];
-    for(var cast_id in movie_casts.cast_ids){
-      $.ajax({
-        type:'GET',
-        url:'https://api.themoviedb.org/3/person/'+movie_casts.cast_ids[cast_id]+'?api_key='+my_api_key,
-        async:false,
-        success: function(cast_details){
-          cast_bdays.push((new Date(cast_details.birthday)).toDateString().split(' ').slice(1).join(' '));
-          cast_bios.push(cast_details.biography);
-          cast_places.push(cast_details.place_of_birth);
-        }
-      });
-    }
-
+  movie_cast = get_movie_cast(movie_id,my_api_key);
+  
+  ind_cast = get_individual_cast(movie_casts,my_api_key);
+  
   details = {
     'title':movie_title,
-      'cast_ids':JSON.stringify(movie_casts.cast_ids),
-      'cast_names':JSON.stringify(movie_casts.cast_names),
-      'cast_chars':JSON.stringify(movie_casts.cast_chars),
-      'cast_profiles':JSON.stringify(movie_casts.cast_profiles),
-      'cast_bdays':JSON.stringify(cast_bdays),
-      'cast_bios':JSON.stringify(cast_bios),
-      'cast_places':JSON.stringify(cast_places),
+      'cast_ids':JSON.stringify(movie_cast.cast_ids),
+      'cast_names':JSON.stringify(movie_cast.cast_names),
+      'cast_chars':JSON.stringify(movie_cast.cast_chars),
+      'cast_profiles':JSON.stringify(movie_cast.cast_profiles),
+      'cast_bdays':JSON.stringify(ind_cast.cast_bdays),
+      'cast_bios':JSON.stringify(ind_cast.cast_bios),
+      'cast_places':JSON.stringify(ind_cast.cast_places),
       'imdb_id':imdb_id,
       'poster':poster,
       'genres':my_genre,
@@ -184,8 +170,28 @@ function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
   });
 }
 
+// get the details of individual cast
+function get_individual_cast(movie_cast,my_api_key) {
+    cast_bdays = [];
+    cast_bios = [];
+    cast_places = [];
+    for(var cast_id in movie_cast.cast_ids){
+      $.ajax({
+        type:'GET',
+        url:'https://api.themoviedb.org/3/person/'+movie_cast.cast_ids[cast_id]+'?api_key='+my_api_key,
+        async:false,
+        success: function(cast_details){
+          cast_bdays.push((new Date(cast_details.birthday)).toDateString().split(' ').slice(1).join(' '));
+          cast_bios.push(cast_details.biography);
+          cast_places.push(cast_details.place_of_birth);
+        }
+      });
+    }
+    return {cast_bdays:cast_bdays,cast_bios:cast_bios,cast_places:cast_places};
+  }
+
 // getting the details of the cast for the requested movie
-function get_casts(movie_id,my_api_key){
+function get_movie_cast(movie_id,my_api_key){
     cast_ids= [];
     cast_names = [];
     cast_chars = [];
