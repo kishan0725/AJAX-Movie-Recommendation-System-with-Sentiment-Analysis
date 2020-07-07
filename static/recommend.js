@@ -130,7 +130,7 @@ function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
   
   movie_cast = get_movie_cast(movie_id,my_api_key);
   
-  ind_cast = get_individual_cast(movie_casts,my_api_key);
+  ind_cast = get_individual_cast(movie_cast,my_api_key);
   
   details = {
     'title':movie_title,
