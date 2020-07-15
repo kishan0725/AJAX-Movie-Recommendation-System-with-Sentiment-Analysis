@@ -177,7 +177,7 @@ h6 {
 
 }
 
-.card:hover, .poster{
+.poster{
     -webkit-box-shadow: 0px 1px 15px 4px rgba(250,250,250,1);
     -moz-box-shadow: 0px 1px 15px 4px rgba(250,250,250,1);
     box-shadow: 0px 1px 15px 4px rgba(250,250,250,1);
@@ -189,9 +189,53 @@ h6 {
 
 .castcard:hover {
     cursor: pointer;
-    -webkit-box-shadow: 0px 1px 15px 4px rgba(180,180,180,1);
-    -moz-box-shadow: 0px 1px 15px 4px rgba(180,180,180,1);
-    box-shadow: 0px 1px 15px 4px rgba(180,180,180,1);
+}
+
+.cast-img {
+	filter: brightness(100%);
+	-moz-transition: all 0.75s ease;
+    -webkit-transition: all 0.75s ease;
+	transition: all 0.75s ease;
+}
+
+
+.cast-img:hover {
+	filter: brightness(50%);
+	-moz-transition: all 0.75s ease;
+    -webkit-transition: all 0.75s ease;
+    transition: all 0.75s ease;
+}
+
+.fig {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: brightness(50%);
+	position: absolute;
+	bottom: 0px;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+	opacity: 0;
+	-moz-transition: all 0.75s ease;
+    -webkit-transition: all 0.75s ease;
+    transition: all 0.75s ease;
+}
+
+.fig:hover {
+	opacity: 1;
+	backdrop-filter:br;
+	-moz-transition: all 0.75s ease;
+    -webkit-transition: all 0.75s ease;
+    transition: all 0.75s ease;
+}
+
+.card-btn {
+	border-radius: 20px;
+}
+
+.imghvr {
+	position: relative;
 }
 
 .table td {
