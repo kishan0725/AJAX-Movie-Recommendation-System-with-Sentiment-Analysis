@@ -80,21 +80,31 @@
   </div>
   {% endfor %}
   
+  {% if casts|length > 1 %}
   <div class="movie" style="color: #E8E8E8;">
-    <center><h3>TOP CAST</h3></center>
+    	<center>
+		<h3>TOP CAST</h3>
+		<h5>(Click on the cast to know more)</h5>
+	</center>
   </div>
 
   <div class="movie-content">
-      {% for name, details in casts.items() if not casts.hidden %}
-        <div class="castcard card" style="width: 14rem;" title="Click to know more about {{name}}" data-toggle="modal" data-target="#{{details[0]}}">
-          <img class="card-img-top" id="{{details[0]}}" height="360" width="240" alt="{{name}} - profile" src="{{details[2]}}">
-          <div class="card-body">
-            <h5 class="card-title">{{name|title}}</h5>
-            <h5 class="card-title"><span style="color:#756969;font-size: 20px;">Character: {{details[1]|title}}</span></h5>
+        {% for name, details in casts.items() if not casts.hidden %}
+          <div class="castcard card" style="width: 15rem;" title="Click to know more about {{name}}" data-toggle="modal" data-target="#{{details[0]}}">
+            <div class="imghvr">
+              <img class="card-img-top cast-img" id="{{details[0]}}" height="360" width="240" alt="{{name}} - profile" src="{{details[2]}}">
+              <figcaption class="fig">
+                <button class="card-btn btn btn-danger"> Know More </button>
+              </figcaption>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{name|title}}</h5>
+              <h5 class="card-title"><span style="color:#756969;font-size: 20px;">Character: {{details[1]|title}}</span></h5>
+            </div>
           </div>
-        </div>
-    {% endfor %}
+      {% endfor %}
     </div>
+{% endif %}
 
   <center>
     {% if reviews %}
@@ -133,20 +143,30 @@
     {% endif %}
   </center>
 
-      <div class="movie" style="color: #E8E8E8;">
-	    <center><h3>RECOMMENDED MOVIES FOR YOU</h3></center>
-	  </div>
+      {% if movie_cards|length > 1 %}
 
-	  <div class="movie-content">
-	    {% for poster, title in movie_cards.items() if not movie_cards.hidden %}
-		    <div class="card" style="width: 14rem;" title="{{title}}" onclick="recommendcard(this)">
-		      <img class="card-img-top" height="360" width="240" alt="{{title}} - poster" src={{poster}}>
-		      <div class="card-body">
-		        <h5 class="card-title">{{title|capitalize}}</h5>
-		      </div>
-		    </div>
-		{% endfor %}
-	  </div>
+
+      <div class="movie" style="color: #E8E8E8;">
+      <center><h3>RECOMMENDED MOVIES FOR YOU</h3><h5>(Click any of the movies to get recommendation)</h5></center>
+    </div>
+
+    <div class="movie-content">
+      {% for poster, title in movie_cards.items() if not movie_cards.hidden %}
+        <div class="card" style="width: 15rem;" title="{{title}}" onclick="recommendcard(this)">
+          <div class="imghvr">
+            <img class="card-img-top" height="360" width="240" alt="{{title}} - poster" src={{poster}}>
+            <figcaption class="fig">
+              <button class="card-btn btn btn-danger"> Click Me </button>
+            </figcaption>
+           </div>
+          <div class="card-body">
+            <h5 class="card-title">{{title|capitalize}}</h5>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% endif %}
 
     
     </div>
