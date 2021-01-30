@@ -13,6 +13,8 @@ The details of the movies(title, genre, runtime, rating, poster, etc) are fetche
 
 Check out the live demo: https://mrswsa.herokuapp.com/
 
+Use this URL - https://the-movie-buff.herokuapp.com/ - in case if you see application error in the above mentioned URL
+
 Link to youtube demo: https://www.youtube.com/watch?v=dhVePtyECFw
 
 # Note
