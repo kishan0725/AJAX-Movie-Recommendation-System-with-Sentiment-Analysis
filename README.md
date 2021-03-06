@@ -47,6 +47,10 @@ Create an account in https://www.themoviedb.org/, click on the `API` link from t
 5. Go to your browser and type `http://127.0.0.1:5000/` in the address bar.
 6. Hurray! That's it.
 
+## Architecture
+
+![IMG-20210306-WA0012](https://user-images.githubusercontent.com/36665975/110212434-597bb700-7ec1-11eb-9ffa-7ac319e33123.jpg)
+
 ## Similarity Score : 
 
    How does it decide which item is most similar to the item user likes? Here we use the similarity scores.
