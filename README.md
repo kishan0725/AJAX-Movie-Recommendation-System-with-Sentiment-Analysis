@@ -49,11 +49,11 @@ Create an account in https://www.themoviedb.org/, click on the `API` link from t
 
 ## Architecture
 
-![IMG-20210306-WA0012](https://user-images.githubusercontent.com/36665975/110212434-597bb700-7ec1-11eb-9ffa-7ac319e33123.jpg)
+![Recommendation App](https://user-images.githubusercontent.com/36665975/168742738-5435cf76-1a42-4d87-94b4-999e5bfc48d3.png)
 
 ## Similarity Score : 
 
-   How does it decide which item is most similar to the item user likes? Here we use the similarity scores.
+   How does it decide which item is most similar to the item user likes? Here come the similarity scores.
    
    It is a numerical value ranges between zero to one which helps to determine how much two items are similar to each other on a scale of zero to one. This similarity score is obtained measuring the similarity between the text details of both of the items. So, similarity score is the measure of similarity between given text details of two items. This can be done by cosine-similarity.
    
