@@ -1,4 +1,4 @@
-# Content-Based-Movie-Recommender-System-with-sentiment-analysis-using-AJAX
+# Movie Recommendation System
 
 ![Python](https://img.shields.io/badge/Python-3.8-blueviolet)
 ![Framework](https://img.shields.io/badge/Framework-Flask-red)
