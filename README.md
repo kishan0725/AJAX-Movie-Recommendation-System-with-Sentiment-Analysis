@@ -5,15 +5,15 @@
 ![Frontend](https://img.shields.io/badge/Frontend-HTML/CSS/JS-green)
 ![API](https://img.shields.io/badge/API-TMDB-fcba03)
 
-**Updated version of this application can be found at:** https://github.com/kishan0725/The-Movie-Cinema
-
-Content Based Recommender System recommends movies similar to the movie user likes and analyses the sentiments on the reviews given by the user for that movie.
-
-The details of the movies(title, genre, runtime, rating, poster, etc) are fetched using an API by TMDB, https://www.themoviedb.org/documentation/api, and using the IMDB id of the movie in the API, I did web scraping to get the reviews given by the user in the IMDB site using `beautifulsoup4` and performed sentiment analysis on those reviews.
+A content-based recommender system that recommends movies similar to the movie the user likes and analyses the sentiments of the reviews given by the user.
 
 Check out the live demo: https://tmc.kishanlal.dev
 
 Link to youtube demo: https://www.youtube.com/watch?v=dhVePtyECFw
+
+## Overview
+
+The movies are recommended based on the content of the movie you entered or selected. The main parameters that are considered for the recommendations are the genre, director, and top 3 casts. The details of the movies, such as title, genre, runtime, rating, poster, casts, etc., are fetched from [TMDB](https://www.themoviedb.org/documentation/api). The reviews given by the users of each individual movie are "web-scraped" from the IMDB website with the help of `beautifulsoup4`, and the reviews are subjected to sentiment analysis, where the model predicts whether the review is positive or negative.
 
 ## Featured in Krish's Live Session on YouTube
 
@@ -21,7 +21,7 @@ Link to youtube demo: https://www.youtube.com/watch?v=dhVePtyECFw
 
 ## How to get the API key?
 
-Create an account in https://www.themoviedb.org/, click on the `API` link from the left hand sidebar in your account settings and fill all the details to apply for API key. If you are asked for the website URL, just give "NA" if you don't have one. You will see the API key in your `API` sidebar once your request is approved.
+Create an account in https://www.themoviedb.org/. Once you successfully created an account, click on the `API` link from the left hand sidebar in your account settings and fill all the details to apply for an API key. If you are asked for the website URL, just give "NA" if you don't have one. You will see the API key in your `API` sidebar once your request has been approved.
 
 ## How to run the project?
 
@@ -39,7 +39,7 @@ Create an account in https://www.themoviedb.org/, click on the `API` link from t
 
 ## Similarity Score : 
 
-   How does it decide which item is most similar to the item user likes? Here come the similarity scores.
+   **How does it decide which item is most similar to the item user likes(or selects in our case)?** Here comes the similarity scores.
    
    It is a numerical value ranges between zero to one which helps to determine how much two items are similar to each other on a scale of zero to one. This similarity score is obtained measuring the similarity between the text details of both of the items. So, similarity score is the measure of similarity between given text details of two items. This can be done by cosine-similarity.
    
