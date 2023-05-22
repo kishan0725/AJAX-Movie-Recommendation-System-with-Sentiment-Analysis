@@ -13,5 +13,5 @@ jsonschema==3.2.0
 tmdbv3api==1.6.1
 lxml==4.6.3
 urllib3==1.26.5
-requests==2.23.0
+requests==2.31.0
 pickleshare==0.7.5
