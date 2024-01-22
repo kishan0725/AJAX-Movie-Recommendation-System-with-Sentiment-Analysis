@@ -67,3 +67,7 @@ More about Cosine Similarity : [Understanding the Math behind Cosine Similarity]
 4. [List of movies in 2019](https://en.wikipedia.org/wiki/List_of_American_films_of_2019)
 5. [List of movies in 2020](https://en.wikipedia.org/wiki/List_of_American_films_of_2020)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=kishan0725/AJAX-Movie-Recommendation-System-with-Sentiment-Analysis&type=Timeline)](https://star-history.com/#kishan0725/AJAX-Movie-Recommendation-System-with-Sentiment-Analysis&Timeline)
+
