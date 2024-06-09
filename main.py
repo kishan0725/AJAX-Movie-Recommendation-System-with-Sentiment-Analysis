@@ -11,7 +11,7 @@ import requests
 
 # load the nlp model and tfidf vectorizer from disk
 filename = 'nlp_model.pkl'
-clf = pickle.load(open(filename, 'rb'))
+clf = pickle.load(open(filename, 'rb'));
 vectorizer = pickle.load(open('tranform.pkl','rb'))
 
 def create_similarity():
