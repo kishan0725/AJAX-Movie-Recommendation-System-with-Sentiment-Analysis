@@ -19,7 +19,7 @@ I've developed a similar application called "The Movie Cinema" which supports al
 
 Link to "The Movie Cinema" application: [https://tmc.kishanlal.dev/](https://tmc.kishanlal.dev/)
 
-Don't worry if the movie that you are looking for is not auto-suggested. Just type the movie name and click on "enter". You will be good to go eventhough if you made some typo errors.
+If you can't find the movie you're searching for through auto-suggestions while typing, there's no need to worry. Simply type the name of the movie and press "enter". Even if you make some typos, it should still work fine.
 
 Source Code: https://github.com/kishan0725/The-Movie-Cinema
 

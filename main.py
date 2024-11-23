@@ -1,11 +1,11 @@
+from email.mime import application
 import numpy as np
 import pandas as pd
 from flask import Flask, render_template, request
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import json
-import bs4 as bs
-import urllib.request
+from bs4 import BeautifulSoup
 import pickle
 import requests
 
@@ -123,30 +123,38 @@ def recommend():
     casts = {cast_names[i]:[cast_ids[i], cast_chars[i], cast_profiles[i]] for i in range(len(cast_profiles))}
 
     cast_details = {cast_names[i]:[cast_ids[i], cast_profiles[i], cast_bdays[i], cast_places[i], cast_bios[i]] for i in range(len(cast_places))}
-
+    print(f"calling imdb api: {'https://www.imdb.com/title/{}/reviews/?ref_=tt_ov_rt'.format(imdb_id)}")
     # web scraping to get user reviews from IMDB site
-    sauce = urllib.request.urlopen('https://www.imdb.com/title/{}/reviews?ref_=tt_ov_rt'.format(imdb_id)).read()
-    soup = bs.BeautifulSoup(sauce,'lxml')
-    soup_result = soup.find_all("div",{"class":"text show-more__control"})
+    url = f'https://www.imdb.com/title/{imdb_id}/reviews/?ref_=tt_ov_rt'
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36'}
 
-    reviews_list = [] # list of reviews
-    reviews_status = [] # list of comments (good or bad)
-    for reviews in soup_result:
-        if reviews.string:
-            reviews_list.append(reviews.string)
-            # passing the review to our model
-            movie_review_list = np.array([reviews.string])
-            movie_vector = vectorizer.transform(movie_review_list)
-            pred = clf.predict(movie_vector)
-            reviews_status.append('Good' if pred else 'Bad')
+    response = requests.get(url, headers=headers)
+    print(response.status_code)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'lxml')
+        soup_result = soup.find_all("div", {"class": "ipc-html-content-inner-div"})
+        print(soup_result)
 
-    # combining reviews and comments into a dictionary
-    movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}     
+        reviews_list = [] # list of reviews
+        reviews_status = [] # list of comments (good or bad)
+        for reviews in soup_result:
+            if reviews.string:
+                reviews_list.append(reviews.string)
+                # passing the review to our model
+                movie_review_list = np.array([reviews.string])
+                movie_vector = vectorizer.transform(movie_review_list)
+                pred = clf.predict(movie_vector)
+                reviews_status.append('Good' if pred else 'Bad')
 
-    # passing all the data to the html file
-    return render_template('recommend.html',title=title,poster=poster,overview=overview,vote_average=vote_average,
-        vote_count=vote_count,release_date=release_date,runtime=runtime,status=status,genres=genres,
-        movie_cards=movie_cards,reviews=movie_reviews,casts=casts,cast_details=cast_details)
+        # combining reviews and comments into a dictionary
+        movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}     
+
+        # passing all the data to the html file
+        return render_template('recommend.html',title=title,poster=poster,overview=overview,vote_average=vote_average,
+            vote_count=vote_count,release_date=release_date,runtime=runtime,status=status,genres=genres,
+            movie_cards=movie_cards,reviews=movie_reviews,casts=casts,cast_details=cast_details)
+    else:
+        print("Failed to retrieve reviews")
 
 if __name__ == '__main__':
     app.run(debug=True)
